@@ -1,11 +1,10 @@
-package com.restcalc;
+package com.restcalc.ServerPack;
 
 import java.io.*;
 
 import javax.annotation.Resource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
@@ -66,7 +65,7 @@ public class RestServer implements Provider<Source> {
     private Source doGet(MessageContext msgContext){
         String query_string = (String) msgContext.get(MessageContext.QUERY_STRING);
         StringBuffer text=new StringBuffer("");
-        String cityName=query_string.split("=")[1];
+        String exp=query_string.split("=")[1];
         System.out.println(query_string);
         try {
 

@@ -1,5 +1,6 @@
-package com.restcalc;
+package com.restcalc.ClientPack;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -15,10 +16,19 @@ public class Client {
 
     public static void main(String args[])throws Exception{
 
+        Form form = new Form();
+        JFrame jFrame = new JFrame("Expert System");
+        jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
+        jFrame.setContentPane(form.panel);
+        jFrame.pack();
+        jFrame.setSize(640,320);
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setVisible(true);
+
         URL url = new URL("http://localhost:8080/calc?city=seoul");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
-        conn.connect();
+        conn.setDoOutput(true);
 
         String xml = "";
         BufferedReader reader =	new BufferedReader(new InputStreamReader(conn.getInputStream()));

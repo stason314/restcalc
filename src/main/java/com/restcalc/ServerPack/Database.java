@@ -1,4 +1,4 @@
-package com.restcalc;
+package com.restcalc.ServerPack;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
