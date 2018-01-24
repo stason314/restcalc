@@ -66,10 +66,12 @@ public class RestServer implements Provider<Source> {
         String query_string = (String) msgContext.get(MessageContext.QUERY_STRING);
         StringBuffer text=new StringBuffer("");
         String exp=query_string.split("=")[1];
-        System.out.println(query_string);
+        System.out.println(exp);
+        String result = Double.toString(calc.calculated(exp));
         try {
 
-            text.append("<isbn>" + "Hello world!" + "</isbn>");
+            text.append("<result>" + result + "</result>");
+            System.out.println(result);
 
         } catch (Exception e) {
             e.printStackTrace();

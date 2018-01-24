@@ -23,9 +23,17 @@ public class Form {
     public JPanel panel;
 
     public Form() {
+
+
         calcButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String exp = calcField.getText();
+                try {
+                    calcArea.setText(Requests.doGet(exp));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
 
             }
         });
