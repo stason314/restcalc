@@ -55,10 +55,7 @@ public class CalcClass {
                     if (isOp(cTmp) && (opPriority(cIn) <= opPriority(cTmp))) {
                         sbOut.append(" ").append(cTmp).append(" ");
                         sbStack.setLength(sbStack.length()-1);
-                    } else {
-                        sbOut.append(" ");
-                        break;
-                    }
+                    } else break;
                 }
                 sbOut.append(" ");
                 sbStack.append(cIn);
