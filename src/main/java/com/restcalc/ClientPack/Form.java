@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Stanislav on 24.01.2018.
@@ -24,13 +26,19 @@ public class Form {
 
     public Form() {
 
+        final String time;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yy");
+        time = dateFormat.format(new Date());
+
 
         calcButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String exp = calcField.getText();
                 try {
-                    calcArea.setText(Requests.doGet(exp));
+                    String result = Requests.doGetCalc(exp);
+                    calcArea.setText(result);
+                    Requests.doPost(BuilderXML.newPut(time, exp, result));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -49,6 +57,16 @@ public class Form {
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
                 e.consume();
+            }
+        });
+        countButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Requests.doGet("ss");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }

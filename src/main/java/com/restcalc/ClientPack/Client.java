@@ -24,7 +24,5 @@ public class Client {
         jFrame.setSize(640,320);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
-        String root = System.getProperty("user.dir");
-        System.out.println(root);
     }
 }

@@ -8,7 +8,7 @@ import java.sql.*;
 public class Database {
 
     private Statement statement;
-    public String data;
+    public String date;
     public String condition;
     public String resultCalc;
 
@@ -25,7 +25,7 @@ public class Database {
         }
     }
 
-    public void into(String data, String condition, String result){
+    public void into(String date, String condition, String result){
         try {
             char chars[];
             chars = condition.toCharArray();
@@ -36,7 +36,7 @@ public class Database {
                 }
                 condition += chars[i];
             }
-            statement.execute("INSERT INTO CALCULATING VALUES(" + data + "," + "'"+condition + "'" + "," + result + ");");
+            statement.execute("INSERT INTO CALCULATING VALUES("+ "'" + date + "'"+ "," + "'"+condition + "'" + "," + "'" + result + "'" + ");");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,11 +49,11 @@ public class Database {
 
 
             while (result.next()) {
-                data = result.getString("DATES");
+                date = result.getString("DATES");
                 condition = result.getString("CONDITION");
                 resultCalc = result.getString("RESULT");
 
-                System.out.printf("%s %s %s \n", data, condition, resultCalc);
+                System.out.printf("%s %s %s \n", date, condition, resultCalc);
             }
             }catch(SQLException e){
             e.printStackTrace();

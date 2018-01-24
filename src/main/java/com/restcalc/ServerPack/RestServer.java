@@ -1,5 +1,7 @@
 package com.restcalc.ServerPack;
 
+import org.w3c.dom.NodeList;
+
 import java.io.*;
 
 import javax.annotation.Resource;
@@ -17,6 +19,9 @@ import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.http.HTTPBinding;
 import javax.xml.ws.http.HTTPException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 
 @WebServiceProvider
@@ -49,35 +54,49 @@ public class RestServer implements Provider<Source> {
 
     private Source doPost(MessageContext msgContext, Source source){
 
-        double test = calc.calculated("2+4");
-
-        System.out.println(calc.getTime() + " " + test);
         DOMResult dom = new DOMResult();
         try {
             Transformer t = TransformerFactory.newInstance().newTransformer();
             t.transform(source, dom);
-            System.out.println(dom.getNode().getLocalName());
+            XPathFactory xpf = XPathFactory.newInstance();
+            XPath xp = xpf.newXPath();
+            NodeList calcs = (NodeList) xp.evaluate("/calc", dom.getNode(),
+                    XPathConstants.NODESET);
+            String date = xp.evaluate("dates", calcs.item(0)).trim();
+            String condition= xp.evaluate("condition", calcs.item(0)).trim();
+            String resultCalc= xp.evaluate("result", calcs.item(0)).trim();
+
+            database.into(date, condition, resultCalc);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new StreamSource();
+        StringBuilder xml = new StringBuilder("<?xml version=\"1.0\"?>");
+        xml.append("<response>result here</response>");
+        return new StreamSource(new StringReader(xml.toString()));
     }
 
     private Source doGet(MessageContext msgContext){
         String query_string = (String) msgContext.get(MessageContext.QUERY_STRING);
         StringBuffer text=new StringBuffer("");
-        String exp=query_string.split("=")[1];
-        System.out.println(exp);
-        String result = Double.toString(calc.calculated(exp));
-        try {
-            database.into("24", exp, result);
 
-            text.append("<result>" + result + "</result>");
+        if (query_string == null){
             database.outQuery();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                text.append("<result>" + "</result>");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            String exp=query_string.split("=")[1];
+            System.out.println(exp);
+            String result = Double.toString(calc.calculated(exp));
+            try {
+                text.append("<result>" + result + "</result>");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         return new StreamSource( new StringReader(text.toString()) );
     }
     public static void main(String[] args) {
