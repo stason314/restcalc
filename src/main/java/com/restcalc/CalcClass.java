@@ -125,12 +125,13 @@ public class CalcClass {
             try {
                 sTmp = st.nextToken().trim();
                 if (1 == sTmp.length() && isOp(sTmp.charAt(0))) {
-                    if (stack.size() < 2 ) {
+                    if (stack.size() < 2 && sTmp.charAt(0) != '-') {
                         throw new Exception("Неверное количество данных в стеке для операции " + sTmp);
                     }
                     dB = stack.pop();
-                    dA = stack.pop();
-
+                    if (stack.size() != 0){
+                        dA = stack.pop();
+                    }else dA = 0;
                     switch (sTmp.charAt(0)) {
                         case '+':
                             dA += dB;
