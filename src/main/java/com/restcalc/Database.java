@@ -15,7 +15,6 @@ public class Database {
             Connection conn = DriverManager.getConnection("jdbc:h2:history", "root", "");
             Statement statement = conn.createStatement();
 
-            statement.execute()
 
 
         } catch (Exception e) {

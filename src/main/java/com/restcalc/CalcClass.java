@@ -1,8 +1,8 @@
 package com.restcalc;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
+import java.util.Date;
 import java.util.Deque;
 import java.util.StringTokenizer;
 
@@ -18,32 +18,19 @@ public class CalcClass {
 
    public double calculated(String exp){
        try {
+           SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yy");
+           time = dateFormat.format(new Date());
            exp = rpn(exp);
 
            return calculate(exp);
        } catch (Exception e) {
            System.out.println(e.getMessage());
        }
-
        return 0;
    }
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader d = new BufferedReader(new InputStreamReader(System.in));
-        String sIn;
-
-        try {
-            System.out.println("Введте выражение для расчета. Поддерживаются цифры, операции +,-,*,/,^,% и приоритеты в виде скобок ( и ):");
-            sIn = d.readLine();
-            sIn = rpn(sIn);
-            System.out.println(sIn);
-            System.out.println(calculate(sIn));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
     //Reverse Polish notation
-    private static String rpn(String sIn) throws Exception {
+    private  String rpn(String sIn) throws Exception {
         StringBuilder sbStack = new StringBuilder(""), sbOut = new StringBuilder("");
         char cIn, cTmp;
 
@@ -73,12 +60,9 @@ public class CalcClass {
                 }
                 sbStack.setLength(sbStack.length()-1);
             } else {
-                // Если символ не оператор - добавляем в выходную последовательность
                 sbOut.append(cIn);
             }
         }
-
-        // Если в стеке остались операторы, добавляем их в входную строку
         while (sbStack.length() > 0) {
             sbOut.append(" ").append(sbStack.substring(sbStack.length()-1));
             sbStack.setLength(sbStack.length()-1);
@@ -87,10 +71,7 @@ public class CalcClass {
         return  sbOut.toString();
     }
 
-    /**
-     * Функция проверяет, является ли текущий символ оператором
-     */
-    private static boolean isOp(char c) {
+    private boolean isOp(char c) {
         switch (c) {
             case '-':
             case '+':
@@ -102,7 +83,7 @@ public class CalcClass {
         return false;
     }
     //operand priority
-    private static byte opPriority(char op) {
+    private byte opPriority(char op) {
         switch (op) {
             case '^':
                 return 3;
@@ -111,9 +92,9 @@ public class CalcClass {
             case '%':
                 return 2;
         }
-        return 1; // Тут остается + и -
+        return 1; // +  -
     }
-    private static double calculate(String sIn) throws Exception {
+    private  double calculate(String sIn) throws Exception {
         double dA = 0, dB = 0;
         String sTmp;
         Deque<Double> stack = new ArrayDeque<>();
@@ -166,4 +147,11 @@ public class CalcClass {
         return stack.pop();
     }
 
+    public String getExp() {
+        return exp;
+    }
+
+    public String getTime() {
+        return time;
+    }
 }

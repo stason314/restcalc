@@ -4,6 +4,10 @@ import java.io.*;
 
 import javax.annotation.Resource;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.Endpoint;
@@ -20,6 +24,12 @@ import javax.xml.ws.http.HTTPException;
 @ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
 @BindingType(value = HTTPBinding.HTTP_BINDING)
 public class RestServer implements Provider<Source> {
+
+    private CalcClass calc;
+
+    public RestServer() {
+        calc = new CalcClass();
+    }
 
     @Resource
     protected WebServiceContext wsContext;
@@ -39,6 +49,18 @@ public class RestServer implements Provider<Source> {
 
     private Source doPost(MessageContext msgContext, Source source){
 
+        double test = calc.calculated("2+4");
+
+        System.out.println(calc.getTime() + " " + test);
+        DOMResult dom = new DOMResult();
+        try {
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.transform(source, dom);
+            System.out.println(dom.getNode().getLocalName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new StreamSource();
     }
 
     private Source doGet(MessageContext msgContext){
