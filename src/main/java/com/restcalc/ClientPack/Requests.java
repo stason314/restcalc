@@ -27,7 +27,6 @@ public class Requests {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
-        conn.connect();
 
         String xml = "";
         BufferedReader reader =	new BufferedReader(new InputStreamReader(conn.getInputStream()));

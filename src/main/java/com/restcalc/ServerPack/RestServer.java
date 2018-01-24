@@ -25,6 +25,7 @@ import javax.xml.ws.http.HTTPException;
 public class RestServer implements Provider<Source> {
 
     private CalcClass calc;
+    public static Database database;
 
     public RestServer() {
         calc = new CalcClass();
@@ -69,17 +70,18 @@ public class RestServer implements Provider<Source> {
         System.out.println(exp);
         String result = Double.toString(calc.calculated(exp));
         try {
+            database.into("24", exp, result);
 
             text.append("<result>" + result + "</result>");
-            System.out.println(result);
+            database.outQuery();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new StreamSource( new StringReader(text.toString()) );
     }
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
+        database = new Database();
         Endpoint.publish("http://localhost:8080/calc", new RestServer());
     }
 
