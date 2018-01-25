@@ -79,20 +79,29 @@ public class RestServer implements Provider<Source> {
     private Source doGet(MessageContext msgContext){
         String query_string = (String) msgContext.get(MessageContext.QUERY_STRING);
         StringBuffer text=new StringBuffer("");
-        System.out.println(query_string);
+        String result = null;
 
         if (query_string == null){
-            database.countQuery("25:01:18");
+
             try {
                 text.append("<result>" + "</result>");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else {
-            String exp=query_string.split("=")[1];
-            String result = Double.toString(calc.calculated(exp));
+            String[] arrS;
+            arrS = query_string.split("=");
+            String res=arrS[0];
+            if (res.equals("count")){
+                if (arrS.length == 1){
+                    result = "Введите дату";
+                }else {
+                    String exp=arrS[1];
+                    result = database.countQuery(exp);
+                }
+            }
             try {
-                text.append("<result>" + result + "</result>");
+                text.append("<count>" + result + "</count>");
             } catch (Exception e) {
                 e.printStackTrace();
             }

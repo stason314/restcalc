@@ -27,7 +27,7 @@ public class Form {
     public Form() {
 
         final String time;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         time = dateFormat.format(new Date());
 
 
@@ -62,7 +62,10 @@ public class Form {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Requests.doGet("ss");
+                    String exp = queryField.getText();
+                    String result = Requests.doGetDate(exp);
+                    queryArea.setText(result);
+
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

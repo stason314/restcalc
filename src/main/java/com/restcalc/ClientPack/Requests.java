@@ -16,16 +16,7 @@ public class Requests {
 
 
     public static String doGetDate(String date) throws Exception{
-        /*char chars[];
-        chars = exp.toCharArray();
-        exp = "";
-        for (int i = 0; i < chars.length; i++){
-            if (chars[i] == '^') {
-                chars[i] = '@';
-            }
-            exp += chars[i];
-        }*/
-        URL url = new URL(CALC_URL + "?exp=" );
+        URL url = new URL(CALC_URL + "?count=" + date);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
@@ -71,7 +62,7 @@ public class Requests {
     }
 
     public static String doGet(String exp) throws Exception {
-        URL url = new URL(CALC_URL  + "?exp");
+        URL url = new URL(CALC_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);

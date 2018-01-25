@@ -53,22 +53,19 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public List<String> countQuery(String date){
+    public String countQuery(String date){
         ResultSet resultSet;
-        List<String> list = new ArrayList<>();
+        int i = 0;
         try {
             resultSet = statement.executeQuery("SELECT * FROM CALCULATING WHERE DATES = '"  + date + "'");
             while (resultSet.next()){
-                date = resultSet.getString("DATES");
-                condition = resultSet.getString("CONDITION");
-                resultCalc = resultSet.getString("RESULT");
-
-                System.out.printf("%s %s %s \n", date, condition, resultCalc);
+                i++;
             }
+            System.out.println(i);
 
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
-        return null;
+        return Integer.toString(i);
     }
 }
