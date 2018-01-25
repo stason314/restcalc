@@ -36,9 +36,8 @@ public class Form {
             public void actionPerformed(ActionEvent e) {
                 String exp = calcField.getText();
                 try {
-                    String result = Requests.doGetCalc(exp);
+                    String result = Requests.doPost(BuilderXML.newPut(time, exp));
                     calcArea.setText(result);
-                    Requests.doPost(BuilderXML.newPut(time, exp, result));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

@@ -77,7 +77,7 @@ public class CalcClass {
             case '+':
             case '*':
             case '/':
-            case '@':
+            case '^':
                 return true;
         }
         return false;
@@ -85,7 +85,7 @@ public class CalcClass {
     //operand priority
     private byte opPriority(char op) {
         switch (op) {
-            case '@':
+            case '^':
                 return 3;
             case '*':
             case '/':
@@ -126,7 +126,7 @@ public class CalcClass {
                         case '%':
                             dA %= dB;
                             break;
-                        case '@':
+                        case '^':
                             dA = Math.pow(dA, dB);
                             break;
                         default:

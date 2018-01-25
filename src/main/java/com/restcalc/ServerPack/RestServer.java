@@ -55,6 +55,7 @@ public class RestServer implements Provider<Source> {
     private Source doPost(MessageContext msgContext, Source source){
 
         DOMResult dom = new DOMResult();
+        String resultCalc = "";
         try {
             Transformer t = TransformerFactory.newInstance().newTransformer();
             t.transform(source, dom);
@@ -64,23 +65,24 @@ public class RestServer implements Provider<Source> {
                     XPathConstants.NODESET);
             String date = xp.evaluate("dates", calcs.item(0)).trim();
             String condition= xp.evaluate("condition", calcs.item(0)).trim();
-            String resultCalc= xp.evaluate("result", calcs.item(0)).trim();
+            resultCalc= Double.toString(calc.calculated(condition));
 
             database.into(date, condition, resultCalc);
         } catch (Exception e) {
             e.printStackTrace();
         }
         StringBuilder xml = new StringBuilder("<?xml version=\"1.0\"?>");
-        xml.append("<response>result here</response>");
+        xml.append("<response>" +  resultCalc + "</response>");
         return new StreamSource(new StringReader(xml.toString()));
     }
 
     private Source doGet(MessageContext msgContext){
         String query_string = (String) msgContext.get(MessageContext.QUERY_STRING);
         StringBuffer text=new StringBuffer("");
+        System.out.println(query_string);
 
         if (query_string == null){
-            database.outQuery();
+            database.countQuery("25:01:18");
             try {
                 text.append("<result>" + "</result>");
             } catch (Exception e) {
@@ -88,7 +90,6 @@ public class RestServer implements Provider<Source> {
             }
         }else {
             String exp=query_string.split("=")[1];
-            System.out.println(exp);
             String result = Double.toString(calc.calculated(exp));
             try {
                 text.append("<result>" + result + "</result>");

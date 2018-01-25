@@ -1,6 +1,8 @@
 package com.restcalc.ServerPack;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Stanislav on 22.01.2018.
@@ -27,15 +29,7 @@ public class Database {
 
     public void into(String date, String condition, String result){
         try {
-            char chars[];
-            chars = condition.toCharArray();
-            condition = "";
-            for (int i = 0; i < chars.length; i++){
-                if (chars[i] == '@') {
-                    chars[i] = '^';
-                }
-                condition += chars[i];
-            }
+
             statement.execute("INSERT INTO CALCULATING VALUES("+ "'" + date + "'"+ "," + "'"+condition + "'" + "," + "'" + result + "'" + ");");
 
         } catch (SQLException e) {
@@ -58,7 +52,23 @@ public class Database {
             }catch(SQLException e){
             e.printStackTrace();
         }
+    }
+    public List<String> countQuery(String date){
+        ResultSet resultSet;
+        List<String> list = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM CALCULATING WHERE DATES = '"  + date + "'");
+            while (resultSet.next()){
+                date = resultSet.getString("DATES");
+                condition = resultSet.getString("CONDITION");
+                resultCalc = resultSet.getString("RESULT");
 
+                System.out.printf("%s %s %s \n", date, condition, resultCalc);
+            }
 
+        }catch (SQLException e){
+
+        }
+        return null;
     }
 }

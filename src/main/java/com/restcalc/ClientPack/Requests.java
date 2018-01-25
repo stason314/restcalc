@@ -15,8 +15,8 @@ public class Requests {
     public static final String CALC_URL = "http://localhost:8080/calc";
 
 
-    public static String doGetCalc(String exp) throws Exception{
-        char chars[];
+    public static String doGetDate(String date) throws Exception{
+        /*char chars[];
         chars = exp.toCharArray();
         exp = "";
         for (int i = 0; i < chars.length; i++){
@@ -24,8 +24,8 @@ public class Requests {
                 chars[i] = '@';
             }
             exp += chars[i];
-        }
-        URL url = new URL(CALC_URL + "?exp=" + exp);
+        }*/
+        URL url = new URL(CALC_URL + "?exp=" );
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
@@ -41,7 +41,7 @@ public class Requests {
        return xml;
     }
 
-    public static void doPost(String xml) throws Exception{
+    public static String doPost(String xml) throws Exception{
 
         URL url = new URL(CALC_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -64,14 +64,14 @@ public class Requests {
             while ((line = br.readLine()) != null)
                 sb.append(line);
             System.out.println(sb.toString());
+            return sb.toString();
         }
         else
-            System.err.println("cannot insert book: " + conn.getResponseCode());
-
+            return "cannot calculate this: " + conn.getResponseCode();
     }
 
     public static String doGet(String exp) throws Exception {
-        URL url = new URL(CALC_URL);
+        URL url = new URL(CALC_URL  + "?exp");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
